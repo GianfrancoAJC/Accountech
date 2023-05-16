@@ -299,7 +299,7 @@ def showinventory():
     try:
         products = Product.query.all()
         products_serialized = [product.serialize() for product in products]
-        return jsonify({'success': True, 'departments': products_serialized}), 200
+        return jsonify({'success': True, 'products': products_serialized}), 200
     except Exception as e:
         return jsonify({'success': False})
 
