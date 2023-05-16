@@ -255,7 +255,7 @@ class Inventory(db.Model):
 class Purchase(db.Model):
     __tablename__ = "Purchases"
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.String, db.ForeignKey('Products.id'), nullable=False) #
+    product_id = db.Column(db.Integer, db.ForeignKey('Products.id'), nullable=False) #
     quantity = db.Column(db.Integer, nullable = False)
     amount = db.Column(db.Integer, nullable=False)
     employee_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)      #
@@ -280,7 +280,7 @@ class Sale(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('Products.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable = False)
     amount = db.Column(db.Integer, nullable=False)
-    client_id = db.Column(db.String(36), db.ForeignKey('Clients.id'), nullable=False)
+    client_id = db.Column(db.Integer, db.ForeignKey('Clients.id'), nullable=False)
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
