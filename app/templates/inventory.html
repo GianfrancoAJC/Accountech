@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+{% block custom %}
+<script src="static/js/purchase.js"></script>
+{% endblock %}
+{% block content %}
+
+<h1 class="p-3 mb-2 bg-dark text-white">Summary of the actual inventory</h1>
+<h2>{{current_user.is_authenticated}}</h2>
+<section class="body__item">
+  <div>
+    <p>
+        <button onclick="showinventory()" class="btn btn-info">See inventory</button>
+    </p>
+  </div>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Stock</th>
+      <th>Expense</th>
+    </thead>
+    <tbody id="InventoryTableBody"></tbody>
+  </table>
+</section>
+
+{% endblock %}
