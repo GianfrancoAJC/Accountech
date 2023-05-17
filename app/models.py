@@ -60,18 +60,16 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(35), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    PCompra = db.Column(db.Numeric, nullable =False)
     CVu = db.Column(db.Numeric, nullable =False)
     PVu = db.Column(db.Numeric, nullable=False) 
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
 
-    def __init__(self, id, name, stock, PCompra, CVu, PVu): #
+    def __init__(self, id, name, stock, CVu, PVu): #
         self.id = id
         self.name = name
         self.stock = stock
-        self.PCompra = PCompra
         self.CVu = CVu
         self.PVu = PVu
 
@@ -82,7 +80,6 @@ class Product(db.Model):
         return {
             'name'    : self.name,
             'stock'   : self.stock,
-            'PCompra' : self.PCompra,
             'CVu'     : self.CVu,
             'PVu'     : self.PVu
         }

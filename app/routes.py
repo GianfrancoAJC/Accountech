@@ -205,6 +205,9 @@ def makepurchase():
 
 @app.route("/inventory")
 def inventory():
+    if not(current_user.is_authenticated):
+        return redirect(url_for("login"))
+
     return render_template("inventory.html")
 
 @app.route("/showinventory", methods=['GET'])
