@@ -20,6 +20,8 @@ def users():
 
 @app.route("/sale")
 def sale():
+    if not(current_user.is_authenticated):
+        return redirect(url_for("loginclient"))
     return render_template("sale.html")
 
 
