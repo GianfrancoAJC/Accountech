@@ -19,7 +19,6 @@ function showinventory() {
                       <td>${product.stock}</td>
                       <td>${product.CVu}</td>
                       <td>${product.PVu}</td>
-                      <td>${product.current_user}</td>
                     `
                 InventoryTableBody.appendChild(tr)
             })

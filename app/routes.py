@@ -1,9 +1,9 @@
 from app import app, db
 from app.models import User, Client, Product, Inventory, Purchase, Sale
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import render_template, request, redirect, url_for, flash, jsonify, send_file
 from flask_login import current_user, login_user, logout_user
-
-
+import openpyxl
+import os
 #routes
 
 @app.route('/')
@@ -30,12 +30,12 @@ def init_inventory():
     products = Product.query.all()
     if len(products) != 0:
         return jsonify({'success':True})
-    product1 = Product(1,"Cristal", 0, 0, 0.5, 2.54)
-    product2 = Product(2,"Pilsen Callao", 0, 0, 0.5, 2.75)
-    product3 = Product(3,"Cusqueña", 0, 0, 0.8, 3.53)
-    product4 = Product(4,"Pilsen Trujillo", 0, 0, 0.5, 2.43)
-    product5 = Product(5,"Guarana", 0, 0, 0.3, 1.09)
-    product6 = Product(6,"Arequipeña", 0, 0, 0.5, 2.62)
+    product1 = Product(1,"Cristal", 0, 0.5, 2.54)
+    product2 = Product(2,"Pilsen Callao", 0, 0.5, 2.75)
+    product3 = Product(3,"Cusqueña", 0, 0.8, 3.53)
+    product4 = Product(4,"Pilsen Trujillo", 0, 0.5, 2.43)
+    product5 = Product(5,"Guarana", 0, 0.3, 1.09)
+    product6 = Product(6,"Arequipeña", 0, 0.5, 2.62)
     db.session.add_all([product1, product2, product3, product4, product5, product6])
     db.session.commit()
     return jsonify({'success':True})
@@ -223,6 +223,101 @@ def showinventory():
         return jsonify({'success': True, 'products': products_serialized}), 200
     except Exception as e:
         return jsonify({'success': False}), 500
+
+@app.route('/excel', methods=['GET'])
+def sendExcel():
+    # Realizar la consulta para obtener todos los registros de productos
+    productos = Product.query.all()
+
+    # Almacenar los registros de productos en una lista
+    lista_productos = []
+
+    for producto in productos:
+        # Agregar los campos deseados a la lista de productos
+        lista_productos.append({
+            'name': producto.name,
+            'stock': producto.stock,
+            'CVu': producto.CVu,
+            'PVu': producto.PVu
+        })   
+    print(lista_productos)
+    ventas = 0
+    for producto in lista_productos:
+        ventas += producto['PVu'] * producto['stock']
+    
+    costo_venta = 0
+    for producto in lista_productos:
+        costo_venta += producto['CVu'] * producto['stock']
+    
+    
+    
+    
+    # Crear el archivo Excel
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    
+    
+    
+    
+    # Configurar encabezados
+    sheet['A1'] = 'Estado de Resultados'
+    sheet['A3'] = 'Ventas'
+    sheet['A4'] = 'Costo de ventas'
+    sheet['A6'] = 'Margen Bruto'
+    sheet['A8'] = 'Gastos Operativos'
+    sheet['A9'] = 'Gastos de ventas'
+    sheet['A10'] = 'Gastos administrativos'
+    sheet['A11'] = 'Otros gastos'
+    sheet['A13'] = 'Total de gastos operativos'
+    sheet['A15'] = 'Utilidad Operativa'
+    sheet['A17'] = 'Otros Ingresos'
+    sheet['A18'] = 'Otros Gastos'
+    sheet['A20'] = 'Resultado antes de impuestos'
+    sheet['A22'] = 'Impuestos'
+    sheet['A24'] = 'Utilidad Neta'
+
+    # Ingresar valores
+    sheet['B3'] = ventas  # Ventas
+    sheet['B4'] = costo_venta  # Costo de ventas
+
+    # Calcular margen bruto
+    sheet['B6'] = '=B3-B4'
+
+    # Ingresar valores de gastos operativos
+    sheet['B9'] = 0  # Gastos de ventas
+    sheet['B10'] = 0  # Gastos administrativos
+    sheet['B11'] = 0  # Otros gastos
+
+    # Calcular total de gastos operativos
+    sheet['B13'] = '=B9+B10+B11'
+
+    # Calcular utilidad operativa
+    sheet['B15'] = '=B6-B13'
+
+    # Ingresar valores de otros ingresos y gastos
+    sheet['B17'] = 0  # Otros ingresos
+    sheet['B18'] = 0  # Otros gastos
+
+    # Calcular resultado antes de impuestos
+    sheet['B20'] = '=B15+B17-B18'
+
+    # Ingresar valor de impuestos
+    sheet['B22'] = 1000  # Impuestos
+
+    # Calcular utilidad neta
+    sheet['B24'] = '=B20-B22'
+
+
+
+
+    # Guardar el archivo Excel
+    nombre_archivo = 'archivo_excel.xlsx'
+    ruta = 'app/static/workbooks/'+nombre_archivo
+    workbook.save(ruta)
+
+    # Enviar el archivo para su descarga
+    return send_file('static\\workbooks\\'+nombre_archivo, as_attachment=True)
+
 
 @app.route("/logout")
 def logout():

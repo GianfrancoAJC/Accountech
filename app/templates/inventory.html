@@ -8,15 +8,18 @@
 <h2>{{current_user.is_authenticated}}</h2>
 <section class="body__item">
   <div>
-    <p>
+    <p class = >
         <button onclick="showinventory()" class="btn btn-info">See inventory</button>
     </p>
+    <a href="{{ url_for('sendExcel') }}" download>
+      <button class="btn btn-info">Descargar archivo Excel</button>
+    </a>
+
   </div>
   <table class="table">
     <thead>
       <th>Name</th>
       <th>Stock</th>
-      <th>Purchase Price</th>
       <th>CVu</th>
       <th>PVu</th>
     </thead>
