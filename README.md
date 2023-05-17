@@ -10,12 +10,12 @@ Nuestro proyecto está dentro de un paquete "app", para iniciarlizarlo en un sis
     $env:FLASK_DEBUG = 1    //Pones el modo debug = 1, osea en true
     flask run               // Finalmente ponen flask run y el programa debe correr en el puerto http://localhost:5000
 
-#INTEGRANTES
+# Integrantes
 -Aldo Gianfranco
 -Alejandro Marcelo
 -Esteban Sulca Infante
 
-#DESCRIPCION
+# Descripcion
 Software de asístencia para administrativos empresariales: permitirá controlar y registrar el inventario y las ventas; así como también generará herramientas contables (estado de resultados)
 
 # Objetivos principales / Misión / Visión.
@@ -26,7 +26,7 @@ Mision: Nuestra misión, o alcance, es ser una plataforma user-friendly, para qu
 
 Visión: Tenemos como visión seguir mejorando el proyecto pero de la mano de nuestros products owners. En otras palabras, personalizar/adaptar el sistema según las necesidades que requiera el contexto. 
 
-# Nombre del script a ejecutar para iniciar la base de datos con datos:
+# Nombre del script a ejecutar para iniciar base de datos con datos:
 No tenemos un ejecutable como tal; sin embargo, contamos con un script que es activable con un botón dentro del programa
 Registrarte como employee -> Login como employee -> boton "make a purchase" --> presionar el primer boton (el cual genera 8 productos pre-definidos con constructores) --> puedes modificar la cantidad de un producto (opcional) --> Submit
 OJO: Crear database 'tienda'
