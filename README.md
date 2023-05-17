@@ -26,6 +26,12 @@ Mision: Nuestra misión, o alcance, es ser una plataforma user-friendly, para qu
 
 Visión: Tenemos como visión seguir mejorando el proyecto pero de la mano de nuestros products owners. En otras palabras, personalizar/adaptar el sistema según las necesidades que requiera el contexto. 
 
+# Qué librerías/lenguajes usamos
+Frameworks: Como primer framework usamos flask. Tambien hacemos uso de bootstrap
+Librerias: Flask login, para el registro; flask migrate, para migraciones; flask_sqlalchemy, flask_bcrypt; para encriptar la contraseña; entre otros.
+Lenguajes: Html, css, javascript, Python
+
+
 # Nombre del script a ejecutar para iniciar base de datos con datos:
 No tenemos un ejecutable como tal; sin embargo, contamos con un script que es activable con un botón dentro del programa
 Registrarte como employee -> Login como employee -> boton "make a purchase" --> presionar el primer boton (el cual genera 8 productos pre-definidos con constructores) --> puedes modificar la cantidad de un producto (opcional) --> Submit
