@@ -38,6 +38,12 @@ Lenguajes: Html, css, javascript, Python
 # Relacion entre modelos
 ![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/151ae827-ba64-4ef5-af64-49f6bb2a3721)
 
+# Endpoints
+
+![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/6f1d5e13-4545-46e9-9a9c-bd3c1043f524)
+
+![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/dbb69768-be91-45c2-b89c-fe7417b1aad2)
+
 
 # Nombre del script a ejecutar para iniciar base de datos con datos:
 No tenemos un ejecutable como tal; sin embargo, contamos con un script que es activable con un botón dentro del programa
