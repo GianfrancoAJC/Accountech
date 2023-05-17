@@ -119,8 +119,13 @@ def signup():
                 db.session.commit()
 
         except:
+            
             flash("Error creating Employee", "danger")
-
+        finally:
+            db.session.close()
+        return redirect("purchase")
+        
+            
     return render_template("signup.html")
 
 
