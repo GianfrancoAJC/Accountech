@@ -1,12 +1,24 @@
 {% extends "master.html" %}
-
+{% block custom %}
+<script src="static/js/purchase.js"></script>
+{% endblock %}
 {% block content %}
 <h1>Here you will be able to make a purchase for the enterprise</h1>
 <div class="container col-6">
-    <form action="" method="POST"> <!-- Agregar el action gogogo  -->
+    <button onclick="initinventory()" class="btn btn-primary">Start Inventory</button>
+    <form action="/update-inventory" method="POST" id="UpdateInventory"> <!-- Agregar el action gogogo  -->
         <div class="mb-3">
-            <label for="productName" class="form-label">Product Name:</label>
-            <input type="text" name="productName" id="productName" class="form-control" placeholder="Enter Product Name" required >
+            <label for="productid" class="form-label">Select product:</label>
+            <select name = "productid" class="form-control">
+                <option value = 1>Producto 1</option>
+                <option value = 2>Producto 2</option>
+                <option value = 3>Producto 3</option>
+                <option value = 4>Producto 4</option>
+                <option value = 5>Producto 5</option>
+                <option value = 6>Producto 6</option>
+                <option value = 7>Producto 7</option>
+                <option value = 8>Producto 8</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="quantity" class="form-label">Quantity:</label>      
@@ -20,8 +32,8 @@
             <label for="employeeName" class="form-label">Employee:</label>      
             <input type="text" name="employeeName" id="employeeName" class="form-control" placeholder="Enter employee who's making the transaction" required>
         </div>
-    
-        <input type="submit" value = "Submit Purchase" class="btn btn-primary">
+        
+        <button onclick="updateinventory()" class="btn btn-primary">Make purchase</button>
     </form>
 </div>
 

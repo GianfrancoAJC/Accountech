@@ -1,7 +1,4 @@
 {% extends "master.html" %}
-{% block custom %}
-<script src="static/js/purchase.js"></script>
-{% endblock %}
 {% block content %}
 
 <h1 class="p-3 mb-2 bg-dark text-white">Employee Interface</h1>
@@ -19,55 +16,3 @@
 
 
 {% endblock %}
-
-<header class="header">
-    <div class="header__item" onclick="showContent(0)">See inventory</div>
-    <div class="header__item" onclick="showContent(1)">Make a purchase</div>
-</header>
-  <div class="body">
-    <section class="body__item" id="section0">
-      <h1>List of Empoyees</h1>
-      <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Age</th>
-          <th>Photo</th>
-        </thead>
-        <tbody id="employeesTableBody"></tbody>
-      </table>
-    </section>
-    <section class="body__item" id="section1">
-      <h1>New Employee</h1>
-      <form id="formCreateEmployeeId">
-        <div>
-          <label for="firstname">First Name:</label>
-          <input type="text" name="firstname" id="firstname" />
-        </div>
-        <div>
-          <label for="lastname">Last Name:</label>
-          <input type="text" name="lastname" id="lastname" />
-        </div>
-        <div>
-          <label for="age">Age:</label>
-          <input type="number" name="age" id="age" />
-        </div>
-        <div>
-          <label for="selectDepartment">Choose Department:</label>
-          <select id="selectDepartment" name="selectDepartment"></select>
-        </div>
-        <div>
-          <label for="image">Photo:</label>
-          <input type="file" name="image" id="image" />
-        </div>
-        <div>
-          <input type="submit" id="submitFormButton" value="Create" />
-        </div>
-      </form>
-      <div
-        id="successEmployeeMessage"
-        style="display: none; color: green;"
-      ></div>
-      <div id="errorEmployeeMessage" style="display: none; color: red;"></div>
-    </section>
-</div>

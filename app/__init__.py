@@ -97,7 +97,8 @@ class Product(db.Model):
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
 
-    def __init__(self, name, stock, expense): #
+    def __init__(self, id, name, stock, expense): #
+        self.id = id
         self.name = name
         self.stock = stock
         self.expense = expense
@@ -105,7 +106,7 @@ class Product(db.Model):
     def __repr__(self):
         return f"Product {self.id} : {self.name} : {self.stock}"
     
-    def __serialize__(self):
+    def serialize(self):
         return {
             'name': self.name,
             'stock': self.stock,
@@ -181,6 +182,53 @@ def users():
 def sale():
     return render_template("sale.html")
 
+
+@app.route("/init-inventory", methods=["POST"])
+def init_inventory():
+    products = Product.query.all()
+    if len(products) != 0:
+        return jsonify({'success':True})
+    product1 = Product(1,"Product1", 0, 0)
+    product2 = Product(2,"Product2", 0, 0)
+    product3 = Product(3,"Product3", 0, 0)
+    product4 = Product(4,"Product4", 0, 0)
+    product5 = Product(5,"Product5", 0, 0)
+    product6 = Product(6,"Product6", 0, 0)
+    product7 = Product(7,"Product7", 0, 0)
+    product8 = Product(8,"Product8", 0, 0)
+    db.session.add_all([product1, product2, product3, product4, product5, product6, product7, product8])
+    db.session.commit()
+    return jsonify({'success':True})
+
+
+@app.route("/update-inventory", methods=["POST"])
+def update_inventory():
+    product_id = request.form.get(
+"productid"
+)
+    quantity = request.form.get(
+"quantity"
+)
+    amount = request.form.get(
+"amount"
+)
+    product = Product.query.get(product_id)
+    if product:
+        
+# Actualiza los campos del producto con los nuevos valores
+
+        product.stock = quantity
+        product.expense = amount
+        db.session.add(product)
+
+        
+# Guarda los cambios en la base de datos
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': f"Product {product_id} updated!"})
+    else:
+        return jsonify({'success': False, 'message': f"Product {product_id} not found."})
+
 @app.route("/purchase")
 def purchase():
     return render_template("purchase.html")
@@ -206,7 +254,7 @@ def signup():
         except:
             flash("Error creating Employee", "danger")
 
-    return render_template("signup.html", tittle = "Signup")
+    return render_template("purchase.html")
 
 
 @app.route("/signupclient", methods=["GET", "POST"])
@@ -286,12 +334,10 @@ def loginclient():
 
 @app.route("/makepurchase")
 def makepurchase():
-    #falta agregar la logica para meter las compras
     return render_template("makepurchase.html")
 
 @app.route("/inventory")
 def inventory():
-    #falta agregar la logica para meter las compras
     return render_template("inventory.html")
 
 @app.route("/showinventory", methods=['GET'])
@@ -301,7 +347,7 @@ def showinventory():
         products_serialized = [product.serialize() for product in products]
         return jsonify({'success': True, 'products': products_serialized}), 200
     except Exception as e:
-        return jsonify({'success': False})
+        return jsonify({'success': False}), 500
 
 @app.route("/logout")
 def logout():
