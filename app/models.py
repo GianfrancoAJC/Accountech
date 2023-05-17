@@ -60,25 +60,31 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(35), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    expense = db.Column(db.Integer, nullable=False) 
+    PCompra = db.Column(db.Integer, nullable =False)
+    CVu = db.Column(db.Integer, nullable =False)
+    PVu = db.Column(db.Integer, nullable=False) 
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
 
-    def __init__(self, id, name, stock, expense): #
+    def __init__(self, id, name, stock, PCompra, CVu, PVu): #
         self.id = id
         self.name = name
         self.stock = stock
-        self.expense = expense
+        self.PCompra = PCompra
+        self.CVu = CVu
+        self.PVu = PVu
 
     def __repr__(self):
-        return f"Product {self.id} : {self.name} : {self.stock}"
+        return f"Product {self.name} : {self.stock} : {self.PVu}"
     
     def serialize(self):
         return {
-            'name': self.name,
-            'stock': self.stock,
-            'expense': self.expense,
+            'name'    : self.name,
+            'stock'   : self.stock,
+            'PCompra' : self.PCompra,
+            'CVu'     : self.CVu,
+            'PVu'     : self.PVu
         }
 
 

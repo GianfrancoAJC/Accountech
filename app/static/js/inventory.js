@@ -17,7 +17,9 @@ function showinventory() {
               tr.innerHTML = `
                       <td>${product.name}</td>
                       <td>${product.stock}</td>
-                      <td>${product.expense}</td>
+                      <td>${product.PCompra}</td>
+                      <td>${product.CVu}</td>
+                      <td>${product.PVu}</td>
                     `
                 InventoryTableBody.appendChild(tr)
             })

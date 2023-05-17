@@ -28,15 +28,13 @@ def init_inventory():
     products = Product.query.all()
     if len(products) != 0:
         return jsonify({'success':True})
-    product1 = Product(1,"Product1", 0, 0)
-    product2 = Product(2,"Product2", 0, 0)
-    product3 = Product(3,"Product3", 0, 0)
-    product4 = Product(4,"Product4", 0, 0)
-    product5 = Product(5,"Product5", 0, 0)
-    product6 = Product(6,"Product6", 0, 0)
-    product7 = Product(7,"Product7", 0, 0)
-    product8 = Product(8,"Product8", 0, 0)
-    db.session.add_all([product1, product2, product3, product4, product5, product6, product7, product8])
+    product1 = Product(1,"Cristal", 0, 0, 0.5, 2.54)
+    product2 = Product(2,"Pilsen Callao", 0, 0, 0.5, 2.75)
+    product3 = Product(3,"Cusqueña", 0, 0, 0.8, 3.53)
+    product4 = Product(4,"Pilsen Trujillo", 0, 0, 0.5, 2.43)
+    product5 = Product(5,"Guarana", 0, 0, 0.3, 1.09)
+    product6 = Product(6,"Arequipeña", 0, 0, 0.5, 2.62)
+    db.session.add_all([product1, product2, product3, product4, product5, product6])
     db.session.commit()
     return jsonify({'success':True})
 
@@ -46,19 +44,16 @@ def update_inventory():
     product_id = request.form.get(
 "productid"
 )
+    
     quantity = request.form.get(
 "quantity"
-)
-    amount = request.form.get(
-"amount"
 )
     product = Product.query.get(product_id)
     if product:
         
 # Actualiza los campos del producto con los nuevos valores
 
-        product.stock = quantity
-        product.expense = amount
+        product.stock = product.stock+int(quantity)
         db.session.add(product)
 
         
