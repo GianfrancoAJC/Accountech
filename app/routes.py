@@ -64,6 +64,37 @@ def update_inventory():
     else:
         return jsonify({'success': False, 'message': f"Product {product_id} not found."})
 
+
+@app.route("/update-inventory-client", methods=["POST"])
+def update_inventory_client():
+    product_id = request.form.get(
+"productid"
+)
+    
+    quantity = request.form.get(
+"quantity"
+)
+    product = Product.query.get(product_id)
+    if product:
+        
+# Actualiza los campos del producto con los nuevos valores
+
+        product.stock = product.stock-int(quantity)
+        if product.stock <= 0:
+            product.stock = 0
+        db.session.add(product)
+
+        
+# Guarda los cambios en la base de datos
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': f"Product {product_id} updated!"})
+    else:
+        return jsonify({'success': False, 'message': f"Product {product_id} not found."})
+
+
+
+
 @app.route("/purchase")
 def purchase():
     return render_template("purchase.html")

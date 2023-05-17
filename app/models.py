@@ -60,9 +60,9 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(35), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    PCompra = db.Column(db.Integer, nullable =False)
-    CVu = db.Column(db.Integer, nullable =False)
-    PVu = db.Column(db.Integer, nullable=False) 
+    PCompra = db.Column(db.Numeric, nullable =False)
+    CVu = db.Column(db.Numeric, nullable =False)
+    PVu = db.Column(db.Numeric, nullable=False) 
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
