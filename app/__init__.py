@@ -91,8 +91,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(35), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    expense = db.Column(db.Integer, nullable=False)
-    #imagen = 
+    expense = db.Column(db.Integer, nullable=False) 
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
@@ -236,7 +235,6 @@ def purchase():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-
     if current_user.is_authenticated:
         return redirect(url_for("purchase"))
 
@@ -254,7 +252,7 @@ def signup():
         except:
             flash("Error creating Employee", "danger")
 
-    return render_template("purchase.html")
+    return render_template("signup.html")
 
 
 @app.route("/signupclient", methods=["GET", "POST"])
@@ -300,7 +298,7 @@ def login():
                     flash("Wrong password", "danger")
 
             else:
-                flash("User with this email does not exist", "danger")
+                flash("User you tried to submit does not exist, try again", "danger")
             
     return render_template("login.html", tittle = "Login")
 
@@ -327,7 +325,7 @@ def loginclient():
                     flash("Wrong password", "danger")
 
             else:
-                flash("User with this email does not exist", "danger")
+                flash("User you tried to submit does not exist, try again", "danger")
             
     return render_template("loginclient.html", tittle = "LoginClient")
 
