@@ -30,7 +30,13 @@ Visión: Tenemos como visión seguir mejorando el proyecto pero de la mano de nu
 Frameworks: Como primer framework usamos flask. Tambien hacemos uso de bootstrap
 Librerias: Flask login, para el registro; flask migrate, para migraciones; flask_sqlalchemy, flask_bcrypt; para encriptar la contraseña; entre otros.
 Lenguajes: Html, css, javascript, Python
+
+
 ![image](https://github.com/GianfrancoAJC/Accountech/assets/131214466/dbc62870-d8ad-483f-9612-a04ffd5e972e)
+
+
+# Relacion entre modelos
+![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/151ae827-ba64-4ef5-af64-49f6bb2a3721)
 
 
 # Nombre del script a ejecutar para iniciar base de datos con datos:
