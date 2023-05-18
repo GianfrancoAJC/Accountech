@@ -44,6 +44,7 @@ Lenguajes: Html, css, javascript, Python
 Algunos de los principales endpoints
 ![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/dca22773-46b5-49ce-af7b-82f6052eae9c)
 
+![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/7b7a84a6-705d-48a4-95a5-67b43558e6d3)
 
 
 # Nombre del script a ejecutar para iniciar base de datos con datos:
