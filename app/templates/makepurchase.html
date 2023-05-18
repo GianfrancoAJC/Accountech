@@ -6,7 +6,7 @@
 <h1>Here you will be able to make a purchase for the enterprise</h1>
 <div class="container col-6">
     <button onclick="initinventory()" class="btn btn-primary">Start Inventory</button>
-    <form action="/update-inventory" method="POST" id="UpdateInventory"> <!-- Agregar el action gogogo  -->
+    <form id="UpdateInventory"> <!-- Agregar el action gogogo  -->
         <div class="mb-3">
             <label for="productid" class="form-label">Select product:</label>
             <select name = "productid" class="form-control">
@@ -23,9 +23,9 @@
             <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Enter Quantity" required>
         </div>
         
-        <button onclick="update_inventory()" class="btn btn-primary">Make purchase</button>
+        <button onclick = "updateinventory(event)" class="btn btn-primary">Make purchase</button>
     </form>
-        <h2 id="result"></h2> <!-- Aqui se mostrara el resultado de la compra  -->
+        <h4 style="color: #00ff00;" id="result"></h4> <!-- Aqui se mostrara el resultado de la compra  -->
 </div>
 
 

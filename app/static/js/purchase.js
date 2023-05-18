@@ -4,9 +4,13 @@ function initinventory() {
   })
 }
 
-function updateinventory() {
+function updateinventory(event) {
+  event.preventDefault(); 
+  const form = document.getElementById('UpdateInventory');
+  const formData = new FormData(form);
   fetch('/update-inventory', {
     method: 'POST',
+    body: formData,
   })
   .then(function (response){
     console.log(response)
@@ -15,7 +19,11 @@ function updateinventory() {
   .then(function (jsonResponse) {
     const result = document.getElementById('result')
     if(jsonResponse.success){
-      result.innerHTML = ''
+      result.innerHTML = jsonResponse.message
+      setTimeout(() => {
+        form.reset()
+        result.innerHTML = ''
+      }, 3000)
     }
     else {
       result.innerHTML = jsonResponse.message
