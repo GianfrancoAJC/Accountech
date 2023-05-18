@@ -69,17 +69,13 @@ def update_inventory():
 
 @app.route("/update-inventory-client", methods=["POST"])
 def update_inventory_client():
-    product_id = request.form.get(
-"productid"
-)
+    product_id = request.form.get("productid")
     
-    quantity = request.form.get(
-"quantity"
-)
+    quantity = request.form.get("quantity")
     product = Product.query.get(product_id)
     if product:
         
-# Actualiza los campos del producto con los nuevos valores
+        # Actualiza los campos del producto con los nuevos valores
 
         product.stock = product.stock-int(quantity)
         if product.stock <= 0:
