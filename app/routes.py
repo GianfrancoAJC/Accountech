@@ -62,9 +62,9 @@ def update_inventory():
 # Guarda los cambios en la base de datos
 
         db.session.commit()
-        return jsonify({'success': True, 'message': f"Product {product_id} updated!"})
+        return jsonify({'success': True, 'message': f"Product {product_id} updated!"}), 200
     else:
-        return jsonify({'success': False, 'message': f"Product {product_id} not found."})
+        return jsonify({'success': False, 'message': f"Product {product_id} not found."}), 400
 
 
 @app.route("/update-inventory-client", methods=["POST"])
