@@ -5,7 +5,7 @@
 {% block content %}
 <h1>Client interface</h1>
 <div class="container col-6">
-    <form action="/update-inventory-client" method="POST" id="UpdateInventoryClient"> <!-- Agregar el action gogogo  -->
+    <form id="UpdateInventoryClient"> <!-- Agregar el action gogogo  -->
         <div class="mb-3">
             <label for="productid" class="form-label">Select product:</label>
             <select name = "productid" class="form-control">
@@ -22,8 +22,9 @@
             <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Enter Quantity" required>
         </div>
         
-        <button onclick="update_inventory_client()" class="btn btn-primary">Buy now</button>
+        <button onclick="updateInventoryClient(event)" class="btn btn-primary">Buy now</button>
     </form>
+        <h4 style="color: #00ff00;" id="result"></h4> 
 </div>
 
 

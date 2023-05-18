@@ -86,7 +86,7 @@ def update_inventory_client():
 # Guarda los cambios en la base de datos
 
         db.session.commit()
-        return jsonify({'success': True, 'message': f"Product {product_id} updated!"})
+        return jsonify({'success': True, 'message': f"Product {product_id} updated, purchase complete!"})
     else:
         return jsonify({'success': False, 'message': f"Product {product_id} not found."})
 
