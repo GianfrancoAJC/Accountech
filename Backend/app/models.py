@@ -1,17 +1,20 @@
-from app import db, app, loginManager, bcrypt
-from flask_login import UserMixin
 from datetime import date
+from flask_sqlalchemy import SQLAlchemy
+from config.local import config
+import uuid
 
+db = SQLAlchemy()
 
-@loginManager.user_loader
-def load_user(id):
-     return User.query.get(int(id))
-#Models
+def setup_db(app, database_path):
+    app.config["SQLALCHEMY_DATABASE_URI"] = config['DATABASE_URI'] if database_path is None else database_path
+    db.app = app
+    db.init_app(app)
+    db.create_all()
 
 #Employee Model
-class User(db.Model, UserMixin):
-    __tablename__ = "Users"
-    id = db.Column(db.Integer, primary_key=True)
+class Employee(db.Model):
+    __tablename__ = "Employees"
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(35),)
     email = db.Column(db.String(35),nullable=False, unique = True)
     password = db.Column(db.String(64), nullable=False)
@@ -20,20 +23,24 @@ class User(db.Model, UserMixin):
     def __init__(self, name, email, password):
         self.name = name
         self.email = email
-        self.password = bcrypt.generate_password_hash(password).decode("utf-8")
-
-    def check_password(self, password):
-         return bcrypt.check_password_hash(self.password, password)
-
+        self.password = password
 
     def __repr__(self):
-        return f"Employee {self.id} : {self.name} : {self.email}"
+        return f"Employee {self.name} : {self.email}"
+    
+    def serialize(self):
+        return {
+            'id'      : self.id,
+            'name'    : self.name,
+            'email'   : self.email,
+            'password': self.password
+        }
     
 
 #Client Model
-class Client(db.Model, UserMixin):
+class Client(db.Model):
     __tablename__ = "Clients"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(35))
     email = db.Column(db.String(35),nullable=False, unique = True)
     password = db.Column(db.String(64), nullable=False)
@@ -42,17 +49,21 @@ class Client(db.Model, UserMixin):
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     
 
-    def __init__(self, name, email, password,): #Acá falta meter el sales
+    def __init__(self, name, email, password): #Acá falta meter el sales
         self.name = name
         self.email = email
-        self.password = bcrypt.generate_password_hash(password).decode("utf-8")
-
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password, password)
+        self.password = password
 
     def __repr__(self):
         return f"Client {self.id} : {self.name} : {self.email}"
 
+    def serialize(self):
+        return {
+            'id'      : self.id,
+            'name'    : self.name,
+            'email'   : self.email,
+            'password': self.password
+        }
 
 #Product Model
 class Product(db.Model):
@@ -78,6 +89,7 @@ class Product(db.Model):
     
     def serialize(self):
         return {
+            'id'      : self.id,
             'name'    : self.name,
             'stock'   : self.stock,
             'CVu'     : self.CVu,
@@ -133,6 +145,3 @@ class Sale(db.Model):
 
     def __repr__(self):
         return f"Sale {self.id}: Product {self.product_id} - Quantity: {self.quantity} - Amount: {self.amount}"
-
-with app.app_context():
-        db.create_all()
