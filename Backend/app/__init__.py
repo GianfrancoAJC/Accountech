@@ -3,15 +3,12 @@ from flask import (
     request,
     jsonify,
     abort,
-    render_template,
-    redirect,
-    url_for,
-    flash,
-    send_file,
 )
-from .models import db, setup_db, Employee, Client, Product, Inventory, Purchase, Sale
+from .models import db, setup_db, Employee, Client, Product, Purchase, Sale
 from flask_cors import CORS
-import openpyxl
+import http.client
+import ssl
+import json
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -35,6 +32,10 @@ def create_app(test_config=None):
                 list_errors.append('Name is required')
             if not body['email']:
                 list_errors.append('Email is required')
+            elif not body['email'].endswith('@accountech.com'):
+                list_errors.append('Email must end with @accountech.com')
+            elif Employee.query.filter_by(email=body['email']).first():
+                list_errors.append('Email already exists')
             if not body['password']:
                 list_errors.append('Password is required')
             if len(list_errors) == 0:
@@ -42,9 +43,9 @@ def create_app(test_config=None):
                 email = body['email']
                 password = body['password']
                 employee = Employee(name, email, password)
-                employee_id = employee.id
                 db.session.add(employee)
                 db.session.commit()
+                employee_id = employee.id
         except:
             db.session.rollback()
             returned_code = 500
@@ -90,7 +91,7 @@ def create_app(test_config=None):
         else:
             return jsonify({
                 'success': True,
-                'employee': employee_id
+                'employee_id': employee_id
             }), returned_code
         
     @app.route("/clients", methods=['POST'])
@@ -103,6 +104,18 @@ def create_app(test_config=None):
                 list_errors.append('Name is required')
             if not body['email']:
                 list_errors.append('Email is required')
+            elif Client.query.filter_by(email=body['email']).first():
+                list_errors.append('Email already exists')
+            conn = http.client.HTTPSConnection("api.eva.pingutil.com", context=ssl._create_unverified_context())
+            payload = ''
+            headers = {}
+            path = "/email?email={}".format(body['email'])
+            conn.request("GET", path, payload, headers)
+            res = conn.getresponse()
+            data = res.read()
+            parsed = json.loads(data.decode("utf-8"))
+            if parsed["status"] == "failure" or parsed["data"]["deliverable"] == False:
+                list_errors.append('Email is not valid')
             if not body['password']:
                 list_errors.append('Password is required')
             if len(list_errors) == 0:
@@ -110,9 +123,9 @@ def create_app(test_config=None):
                 email = body['email']
                 password = body['password']
                 client = Client(name, email, password)
-                client_id = client.id
                 db.session.add(client)
                 db.session.commit()
+                client_id = client.id
         except:
             db.session.rollback()
             returned_code = 500
@@ -158,40 +171,57 @@ def create_app(test_config=None):
         else:
             return jsonify({
                 'success': True,
-                'client': client_id
+                'client_id': client_id
             }), returned_code
 
     @app.route("/inventory", methods=["POST"])
     def init_inventory():
-        products = Product.query.all()
-        if len(products) != 0:
-            return jsonify({'success':True, 'message': 'Inventory already initialized'}), 200
-        product1 = Product(1,"Cristal", 0, 0.5, 2.54)
-        product2 = Product(2,"Pilsen Callao", 0, 0.5, 2.75)
-        product3 = Product(3,"Cusqueña", 0, 0.8, 3.53)
-        product4 = Product(4,"Pilsen Trujillo", 0, 0.5, 2.43)
-        product5 = Product(5,"Guarana", 0, 0.3, 1.09)
-        product6 = Product(6,"Arequipeña", 0, 0.5, 2.62)
-        db.session.add_all([product1, product2, product3, product4, product5, product6])
-        db.session.commit()
-        return jsonify({'success':True, 'message': 'Inventory initialized successfully'}), 200
+        try:
+            products = Product.query.all()
+            if len(products) != 0:
+                return jsonify({'success':True, 'message': 'Inventory already initialized'}), 200
+            product1 = Product(1,"Cristal", 0, 0.5, 2.54)
+            product2 = Product(2,"Pilsen Callao", 0, 0.5, 2.75)
+            product3 = Product(3,"Cusqueña", 0, 0.8, 3.53)
+            product4 = Product(4,"Pilsen Trujillo", 0, 0.5, 2.43)
+            product5 = Product(5,"Guarana", 0, 0.3, 1.09)
+            product6 = Product(6,"Arequipeña", 0, 0.5, 2.62)
+            db.session.add_all([product1, product2, product3, product4, product5, product6])
+            db.session.commit()
+            return jsonify({'success':True, 'message': 'Inventory initialized successfully'}), 200
+        except:
+            db.session.rollback()
+            returned_code = 500
+            abort(returned_code)
 
     @app.route("/inventory", methods=["PATCH"])
     def update_inventory():
         returned_code = 200
         try:
             body = request.json
-            product_id = body["productid"]
-            quantity = body["quantity"]
+            product_id = int(body["product_id"])
+            quantity = int(body["quantity"])
             product = Product.query.get(product_id)
             if product:
                 if body["type"] == "purchase":
-                    product.stock = product.stock+int(quantity)
+                    product.stock = product.stock+quantity
+                    employee_id = body["id"]
+                    amount = quantity*product.CVu
+                    purchase = Purchase(product_id, quantity, amount, employee_id)
+                    db.session.add(purchase)
                 elif body["type"] == "sale":
-                    if product.stock-int(quantity) < 0:
+                    if product.stock-quantity < 0:
                         product.stock = 0
+                        client_id = body["id"]
+                        amount = product.stock*product.PVu
+                        sale = Sale(product_id, quantity, amount, client_id)
+                        db.session.add(sale)
                     else:
-                        product.stock = product.stock-int(quantity)
+                        product.stock = product.stock-quantity
+                        client_id = body["id"]
+                        amount = quantity*product.PVu
+                        sale = Sale(product_id, quantity, amount, client_id)
+                        db.session.add(sale)
                 db.session.add(product)
                 db.session.commit()
             else:
@@ -214,101 +244,108 @@ def create_app(test_config=None):
                 return jsonify({'success': False, 'message': 'Inventory is empty'}), 404
             return jsonify({'success': True, 'products': products_serialized}), 200
         except Exception as e:
-            return jsonify({'success': False}), 500
-
-    @app.route('/excel', methods=['GET'])
-    def sendExcel():
-        # Realizar la consulta para obtener todos los registros de productos
-        productos = Product.query.all()
-
-        # Almacenar los registros de productos en una lista
-        lista_productos = []
-
-        for producto in productos:
-            # Agregar los campos deseados a la lista de productos
-            lista_productos.append({
-                'name': producto.name,
-                'stock': producto.stock,
-                'CVu': producto.CVu,
-                'PVu': producto.PVu
-            })   
-        print(lista_productos)
-        ventas = 0
-        for producto in lista_productos:
-            ventas += producto['PVu'] * producto['stock']
+            returned_code = 500
+            abort(returned_code)
         
-        costo_venta = 0
-        for producto in lista_productos:
-            costo_venta += producto['CVu'] * producto['stock']
+    @app.route("/purchase", methods=['GET'])
+    def showpurchases():
+        try:
+            purchases = Purchase.query.all()
+            purchases_serialized = [purchase.serialize() for purchase in purchases]
+            if len(purchases_serialized) == 0:
+                return jsonify({'success': False, 'message': 'No purchases found'}), 404
+            return jsonify({'success': True, 'purchases': purchases_serialized}), 200
+        except Exception as e:
+            returned_code = 500
+            abort(returned_code)
         
-        
-        
-        
-        # Crear el archivo Excel
-        workbook = openpyxl.Workbook()
-        sheet = workbook.active
-        
-        
-        
-        
-        # Configurar encabezados
-        sheet['A1'] = 'Estado de Resultados'
-        sheet['A3'] = 'Ventas'
-        sheet['A4'] = 'Costo de ventas'
-        sheet['A6'] = 'Margen Bruto'
-        sheet['A8'] = 'Gastos Operativos'
-        sheet['A9'] = 'Gastos de ventas'
-        sheet['A10'] = 'Gastos administrativos'
-        sheet['A11'] = 'Otros gastos'
-        sheet['A13'] = 'Total de gastos operativos'
-        sheet['A15'] = 'Utilidad Operativa'
-        sheet['A17'] = 'Otros Ingresos'
-        sheet['A18'] = 'Otros Gastos'
-        sheet['A20'] = 'Resultado antes de impuestos'
-        sheet['A22'] = 'Impuestos'
-        sheet['A24'] = 'Utilidad Neta'
+    @app.route("/sale", methods=['GET'])
+    def showsales():
+        try:
+            sales = Sale.query.all()
+            sales_serialized = [sale.serialize() for sale in sales]
+            if len(sales_serialized) == 0:
+                return jsonify({'success': False, 'message': 'No sales found'}), 404
+            return jsonify({'success': True, 'sales': sales_serialized}), 200
+        except Exception as e:
+            returned_code = 500
+            abort(returned_code)
 
-        # Ingresar valores
-        sheet['B3'] = ventas  # Ventas
-        sheet['B4'] = costo_venta  # Costo de ventas
+    @app.route('/eerr', methods=['GET'])
+    def showeerr():
+        try:
+            # Realizar la consulta para obtener todos los registros de productos
+            productos = Product.query.all()
 
-        # Calcular margen bruto
-        sheet['B6'] = '=B3-B4'
+            # Almacenar los registros de productos en una lista
+            lista_productos = []
 
-        # Ingresar valores de gastos operativos
-        sheet['B9'] = 0  # Gastos de ventas
-        sheet['B10'] = 0  # Gastos administrativos
-        sheet['B11'] = 0  # Otros gastos
+            for producto in productos:
+                # Agregar los campos deseados a la lista de productos
+                lista_productos.append({
+                    'name': producto.name,
+                    'stock': producto.stock,
+                    'CVu': producto.CVu,
+                    'PVu': producto.PVu
+                })
+            ventas = 0
+            for producto in lista_productos:
+                ventas += producto['PVu'] * producto['stock']
+            
+            costo_venta = 0
+            for producto in lista_productos:
+                costo_venta += producto['CVu'] * producto['stock']
+            
+            utilidad_bruta = ventas - costo_venta
+            return jsonify({"1": "Dev. de Ventas\n0",
+                            "2": "Ventas\n" + str(ventas),
+                            "3": "Ventas brutas\n" + str(ventas),
+                            "4": "Costo de ventas\n" + str(costo_venta),
+                            "5": "Utilidad bruta\n" + str(utilidad_bruta),
+                            "6": "Gastos operativos\n0",
+                            "7": "Gasto de ventas\n0",
+                            "8": "Otros gastos\n0",
+                            "9": "Otros ingresos\n0",
+                            "10": "Utilidad operativa\n" + str(utilidad_bruta),
+                            "11": "Gastos financieros\n0",
+                            "12": "Ingresos financieros\n0",
+                            "13": "Utilidad antes de participaciones e impuestos\n" + str(utilidad_bruta),
+                            "14": "Participaciones\n0",
+                            "15": "Impuestos\n0",
+                            "16": "Utilidad neta\n" + str(utilidad_bruta),
+                            "success": True}), 200
+        except:
+            returned_code = 500
+            abort(returned_code)
 
-        # Calcular total de gastos operativos
-        sheet['B13'] = '=B9+B10+B11'
+    @app.route('/mcp', methods=['GET']) #margen de contribucion ponderado, sirve para calcular el punto de equilibrio
+    def get_pepp():
+        try:
+            # Realizar la consulta para obtener todos los registros de productos
+            productos = Product.query.all()
 
-        # Calcular utilidad operativa
-        sheet['B15'] = '=B6-B13'
+            # Almacenar los registros de productos en una lista
+            lista_productos = []
 
-        # Ingresar valores de otros ingresos y gastos
-        sheet['B17'] = 0  # Otros ingresos
-        sheet['B18'] = 0  # Otros gastos
-
-        # Calcular resultado antes de impuestos
-        sheet['B20'] = '=B15+B17-B18'
-
-        # Ingresar valor de impuestos
-        sheet['B22'] = 1000  # Impuestos
-
-        # Calcular utilidad neta
-        sheet['B24'] = '=B20-B22'
-
-
-
-
-        # Guardar el archivo Excel
-        nombre_archivo = 'archivo_excel.xlsx'
-        ruta = 'app/static/workbooks/'+nombre_archivo
-        workbook.save(ruta)
-
-        # Enviar el archivo para su descarga
-        return send_file('static\\workbooks\\'+nombre_archivo, as_attachment=True)
+            for producto in productos:
+                # Agregar los campos deseados a la lista de productos
+                lista_productos.append({
+                    'name': producto.name,
+                    'stock': producto.stock,
+                    'CVu': producto.CVu,
+                    'PVu': producto.PVu
+                })
+            stock_total = 0
+            for producto in lista_productos:
+                stock_total += producto['stock']
+            margen = 0
+            for producto in lista_productos:
+                margen += (producto['PVu'] - producto['CVu']) * producto['stock'] / stock_total
+            return jsonify({"mcp": margen, "success": True}), 200
+            
+        except:
+            returned_code = 500
+            abort(returned_code)
 
     @app.errorhandler(405)
     def method_not_allowed(error):

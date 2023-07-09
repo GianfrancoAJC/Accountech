@@ -71,8 +71,8 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(35), nullable=False)
     stock = db.Column(db.Integer, nullable=False)
-    CVu = db.Column(db.Numeric, nullable =False)
-    PVu = db.Column(db.Numeric, nullable=False) 
+    CVu = db.Column(db.Integer, nullable =False)
+    PVu = db.Column(db.Integer, nullable=False) 
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
@@ -96,14 +96,6 @@ class Product(db.Model):
             'PVu'     : self.PVu
         }
 
-
-#Product Model
-class Inventory(db.Model):
-    __tablename__ = "Inventory"
-    id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('Products.id'), nullable=False)
-
-
 #Purchases
 class Purchase(db.Model):
     __tablename__ = "Purchases"
@@ -111,7 +103,7 @@ class Purchase(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('Products.id'), nullable=False) #
     quantity = db.Column(db.Integer, nullable = False)
     amount = db.Column(db.Integer, nullable=False)
-    employee_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)      #
+    employee_id = db.Column(db.String(120), db.ForeignKey('Employees.id'), nullable=False)      #
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
@@ -124,6 +116,15 @@ class Purchase(db.Model):
 
     def __repr__(self):
         return f"Product {self.id} : {self.name} : {self.stock}"
+    
+    def serialize(self):
+        return {
+            'id'      : self.id,
+            'product_id'    : self.product_id,
+            'quantity'   : self.quantity,
+            'amount'     : self.amount,
+            'employee_id'     : self.employee_id
+        }
 
 
 #Sales
@@ -133,7 +134,7 @@ class Sale(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('Products.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable = False)
     amount = db.Column(db.Integer, nullable=False)
-    client_id = db.Column(db.Integer, db.ForeignKey('Clients.id'), nullable=False)
+    client_id = db.Column(db.String(120), db.ForeignKey('Clients.id'), nullable=False)
     created_at = db.Column(db.Integer, nullable=False, default=date.today().year)
     modified_at = db.Column(db.Integer, nullable=False, default=date.today().year)
 
@@ -145,3 +146,12 @@ class Sale(db.Model):
 
     def __repr__(self):
         return f"Sale {self.id}: Product {self.product_id} - Quantity: {self.quantity} - Amount: {self.amount}"
+    
+    def serialize(self):
+        return {
+            'id'      : self.id,
+            'product_id'    : self.product_id,
+            'quantity'   : self.quantity,
+            'amount'     : self.amount,
+            'client_id'     : self.client_id
+        }
