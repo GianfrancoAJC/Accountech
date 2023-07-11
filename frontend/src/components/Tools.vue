@@ -1,7 +1,7 @@
 <template>
     <h1>Inventory Page</h1>
     <br>
-    <butt>Ocultar inventorario</butt>
+    <button>Ocultar inventorario</button>
     <h1>{{inventories.length}}</h1>
     <div v-if="inventories.length">
         <table class="inventory-table">
