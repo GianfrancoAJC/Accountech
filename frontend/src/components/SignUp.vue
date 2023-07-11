@@ -7,6 +7,7 @@
 
 <script>
 import Form from './Form.vue';
+import { signUp } from './users.api';
 
 export default {
   name: 'SignUp',
@@ -14,10 +15,25 @@ export default {
     Form
   },
   methods: {
-    handleSignUpSubmit(formData) {
-      // Aquí puedes realizar las acciones necesarias para el registro
-      // utilizando los datos del formulario (formData)
-      console.log('Sign Up form submitted:', formData);
+    async handleSignUpSubmit(formData) {
+      try {
+        const { success, errors = [], token = null } = await signUp(formData);
+        if (success) {
+          // Acciones a realizar cuando el registro es exitoso
+          console.log('Sign Up successful');
+          console.log('Token:', token);
+          // Redireccionar a otra página
+          this.$router.push({ name: 'Purchase' });
+        } else {
+          // Acciones a realizar cuando hay errores de registro
+          console.log('Sign Up errors:', errors);
+          // Actualizar el estado de errores en el formulario
+          // this.$refs.form.setErrorMessages(errors);
+        }
+      } catch (error) {
+        // Acciones a realizar cuando hay un error en la solicitud
+        console.log('Error:', error);
+      }
     }
   }
 };
