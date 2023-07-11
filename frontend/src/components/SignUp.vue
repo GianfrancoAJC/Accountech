@@ -1,39 +1,33 @@
 <template>
   <div>
     <h2>Sign Up</h2>
-    <Form @form-submit="handleSignUpSubmit" />
+    <CForm @form-submit="handleSignUpSubmit" />
   </div>
 </template>
 
 <script>
-import Form from './Form.vue';
-import { signUp } from './users.api';
+import CForm from './Form.vue';
+import { createclient } from '@/services/client.api';
+import { createemployee } from '@/services/employee.api';
 
 export default {
   name: 'SignUp',
   components: {
-    Form
+    CForm
   },
   methods: {
     async handleSignUpSubmit(formData) {
-      try {
-        const { success, errors = [], token = null } = await signUp(formData);
-        if (success) {
-          // Acciones a realizar cuando el registro es exitoso
-          console.log('Sign Up successful');
-          console.log('Token:', token);
-          // Redireccionar a otra página
-          this.$router.push({ name: 'Purchase' });
-        } else {
-          // Acciones a realizar cuando hay errores de registro
-          console.log('Sign Up errors:', errors);
-          // Actualizar el estado de errores en el formulario
-          // this.$refs.form.setErrorMessages(errors);
-        }
-      } catch (error) {
-        // Acciones a realizar cuando hay un error en la solicitud
-        console.log('Error:', error);
+      // Aquí puedes realizar las acciones necesarias para el registro
+      // utilizando los datos del formulario (formData)
+      if (formData.role == 'employee') {
+        const { employee_id } = await createemployee(formData);
+        console.log('employee: ', employee_id);
+      } else {
+        const { client_id } = await createclient(formData);
+        console.log('client: ', client_id);
       }
+      console.log('Sign Up form submitted:', formData);
+      //console.log('Sign Up form submitted:', formData.name, formData.password, formData.email, formData.role, formData.terms);
     }
   }
 };

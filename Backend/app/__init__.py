@@ -63,7 +63,7 @@ def create_app(test_config=None):
                 'employee_id': employee_id
             }), returned_code
 
-    @app.route("/employees", methods=['GET'])
+    @app.route("/employee", methods=['GET'])
     def log_employees():
         returned_code = 200
         list_errors = []
@@ -143,12 +143,13 @@ def create_app(test_config=None):
                 'client_id': client_id
             }), returned_code
         
-    @app.route("/clients", methods=['GET'])
+    @app.route("/client", methods=['POST'])
     def log_clients():
         returned_code = 200
         list_errors = []
         try:
-            body = request.json
+            body = request.get_json()
+            print(body)
             if not body['email']:
                 list_errors.append('Email is required')
             if not body['password']:

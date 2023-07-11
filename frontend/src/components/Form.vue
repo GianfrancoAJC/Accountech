@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent.stop="handleSubmit">
     <label>Name:</label>
     <input type="name" required v-model="formData.name">
 
@@ -29,22 +29,18 @@
 
 <script>
 export default {
-  name: 'Form',
-  props: {
-    initialFormData: {
-      type: Object,
-      default: () => ({
-        name: '',
-        password: '',
-        email: '',
-        role: '',
-        terms: false
-      })
-    }
+  name: 'CForm',
+  components: {
   },
   data() {
     return {
-      formData: { ...this.initialFormData },
+      formData: {
+        name: '',
+        password: '',
+        email: '',
+        role: null,
+        terms: false
+      },
       passwordError: ''
     };
   },
