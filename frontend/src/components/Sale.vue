@@ -1,15 +1,29 @@
 <template>
     <div class="home">
       <h1>Here the clients can buy products to the company</h1>
-      <p>Welcome to our website! We offer a wide range of products and services to meet your needs. Whether you're looking for stylish clothing, high-quality electronics, or reliable home appliances, we've got you covered.</p>
-      <p>Explore our website to discover amazing deals, exclusive offers, and a seamless shopping experience. Don't forget to sign up for our newsletter to stay updated with the latest promotions and news.</p>
+      <BForm @buy-form-submit="handleBuySubmit" />
     </div>
   </template>
   
   <script>
+  import BForm from './buyForm.vue';
+  import { updateinventory } from '@/services/inventory.api';
   export default {
     name: 'CSale',
-    components: {},
+    components: {
+      BForm
+    },
+    methods: {
+      async handleBuySubmit(formData) {
+        formData.type = 'sale';
+        formData.id = 'id';
+        const { data } = await updateinventory(formData);
+        // Aquí puedes realizar las acciones necesarias para el registro
+        // utilizando los datos del formulario (formData)
+        console.log('Buy form submitted:', formData);
+        //console.log('Buy form submitted:', formData.name, formData.password, formData.email, formData.role, formData.terms);
+    }
+    },
   };
   </script>
   

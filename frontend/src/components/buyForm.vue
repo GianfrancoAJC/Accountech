@@ -1,27 +1,17 @@
 <template>
     <h1>Here the clients can buy products to the company</h1>
     <form @submit.prevent.stop="handleSubmit">
-      <label>Name:</label>
-      <input type="name" required v-model="formData.name">
-  
-      <label>Password:</label>
-      <input type="password" required v-model="formData.password">
-      <div v-if="passwordError" class="error">{{ passwordError }}</div>
-  
-      <label>Email:</label>
-      <input type="email" required v-model="formData.email">
-  
-      <label>Role:</label>
-      <select v-model="formData.role">
-        <option value="client">Client</option>
-        <option value="employee">Employee</option>
+      <label>Quantity:</label>
+      <input type="quantity" required v-model="formData.quantity">
+      <label>Product:</label>
+      <select v-model="formData.product_id">
+        <option value="1">Cristal</option>
+        <option value="2">Pilsen Callao</option>
+        <option value="3">Cusquena</option>
+        <option value="4">Pilsen Trujillo</option>
+        <option value="5">Guarana</option>
+        <option value="6">Arequipena</option>
       </select>
-  
-      <div class="terms">
-        <input type="checkbox" v-model="formData.terms" required>
-        <label>Accept terms and conditions</label>
-      </div>
-  
       <div class="submit">
         <button>Submit</button>
       </div>
@@ -31,29 +21,23 @@
   
   <script>
   export default {
-    name: 'CForm',
+    name: 'BForm',
     components: {
     },
     data() {
       return {
         formData: {
-          name: '',
-          password: '',
-          email: '',
-          role: null,
-          terms: false
+          quantity: '',
+          product_id: '',
+          type: '',
+          id: '',
         },
-        passwordError: ''
       };
     },
     methods: {
       handleSubmit() {
-        // Validate password
-        this.passwordError = this.formData.password.length > 5 ? '' : 'Password must be at least 6 characters long';
-        if (!this.passwordError) {
-          // Emit event with form data
-          this.$emit('form-submit', this.formData);
-        }
+        // Emit event with form data
+        this.$emit('buy-form-submit', this.formData);
       }
     }
   };
