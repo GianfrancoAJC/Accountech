@@ -8,6 +8,7 @@ import Tools from '../components/Purchase.vue'
 import buyForm from '../components/buyForm.vue'
 import client from '../views/client.vue'
 import employee from '../views/employee.vue'
+import NotFound from '../views/NotFound.vue'
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: '/employee',
     name: 'Employee',
     component: employee,
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: NotFound,
   }
 ]
 
