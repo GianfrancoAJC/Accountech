@@ -247,6 +247,25 @@ def create_app(test_config=None):
         except Exception as e:
             returned_code = 500
             abort(returned_code)
+    
+    @app.route("/inventory>", methods=['DELETE'])
+    def deleteproduct():
+        try:
+            body = request.json
+            if body["password"] != "Marvin es el mejor profesor de la UTEC":
+                return jsonify({'success': False, 'message': 'Wrong password'}), 400
+            if not body["product_id"]:
+                return jsonify({'success': False, 'message': 'Product id is required'}), 400
+            product_id = body["product_id"]
+            product = Product.query.get(product_id)
+            if not product:
+                return jsonify({'success': False, 'message': 'Product not found'}), 404
+            db.session.delete(product)
+            db.session.commit()
+            return jsonify({'success': True, 'message': f"Product {product_id} deleted"}), 200
+        except Exception as e:
+            returned_code = 500
+            abort(returned_code)
         
     @app.route("/purchase", methods=['GET'])
     def showpurchases():
