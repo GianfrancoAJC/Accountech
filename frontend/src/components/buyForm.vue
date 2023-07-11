@@ -1,4 +1,5 @@
 <template>
+    <h1>Here the clients can buy products to the company</h1>
     <form @submit.prevent.stop="handleSubmit">
       <label>Name:</label>
       <input type="name" required v-model="formData.name">
@@ -25,6 +26,7 @@
         <button>Submit</button>
       </div>
     </form>
+    <br>
   </template>
   
   <script>

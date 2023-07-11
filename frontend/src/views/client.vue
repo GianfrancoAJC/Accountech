@@ -8,7 +8,7 @@
   
   <script>
   export default {
-    name: 'HomeView',
+    name: 'CClient',
     components: {},
   };
   </script>

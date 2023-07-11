@@ -8,7 +8,7 @@
   
   <script>
   export default {
-    name: 'HomeView',
+    name: 'CSale',
     components: {},
   };
   </script>
