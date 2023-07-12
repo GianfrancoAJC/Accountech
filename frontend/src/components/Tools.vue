@@ -45,7 +45,7 @@ export default {
         async fetchInventories() {
             const { products } = await getinventory();
             console.log('products: ', products);
-            this.inventories = products;
+            this.inventories = [...products];
             console.log('inventories: ', this.inventories);
         }
     }
