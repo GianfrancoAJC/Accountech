@@ -15,6 +15,12 @@ export default {
   components: {
     CForm
   },
+  data() {
+    return {
+      employee_id: '',
+      client_id: '',
+    };
+  },
   methods: {
     async handleSignUpSubmit(formData) {
       // Aquí puedes realizar las acciones necesarias para el registro
@@ -24,7 +30,7 @@ export default {
         console.log('employee: ', data);
         if(success){
           this.employee_id = data;
-          this.$router.push({ name: 'Employee', params: { id: this.employee_id } });
+          this.$router.push({ name: 'Employee' });
         } else {
           alert('Wrong credentials');
         }
@@ -35,7 +41,7 @@ export default {
         console.log('success: ', success);
         if(success){
           this.client_id = data;
-          this.$router.push({ name: 'Client', params: { id: this.client_id } });
+          this.$router.push({ name: 'Client'});
         } else {
           alert('Wrong credentials');
         }

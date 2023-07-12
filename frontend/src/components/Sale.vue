@@ -1,7 +1,6 @@
 <template>
     <div class="home">
       <h1>Here the clients can buy products to the company</h1>
-      <p> {{ client_id }} </p>
       <BForm @buy-form-submit="handleBuySubmit" />
     </div>
   </template>
@@ -22,8 +21,9 @@
     methods: {
       async handleBuySubmit(formData) {
         formData.type = 'sale';
-        formData.id = 'id';
+        formData.id = this.client_id;
         const { data } = await updateinventory(formData);
+        console.log('Buy form submitted:', data);
         // Aquí puedes realizar las acciones necesarias para el registro
         // utilizando los datos del formulario (formData)
         console.log('Buy form submitted:', formData);

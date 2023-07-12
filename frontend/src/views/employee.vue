@@ -4,19 +4,26 @@
       <p>Welcome to our website! We offer a wide range of products and services to meet your needs. Whether you're looking for stylish clothing, high-quality electronics, or reliable home appliances, we've got you covered.</p>
     </div>
     <div>
-      <CPurchase />
+      <CPurchase :employee_id = "id" />
+    </div>
+    <div>
+      <Tools />
     </div>
   </template>
   
   <script>
   import CPurchase from '@/components/Purchase.vue';
+  import Tools from '@/components/Tools.vue';
   export default {
     name: 'CPurchase',
     components: {
       CPurchase,
+      Tools,
     },
-    mounted() {
-      const id = this.$route.params.id;
+    data() {
+      return {
+        id: '',
+      };
     },
   };
   </script>

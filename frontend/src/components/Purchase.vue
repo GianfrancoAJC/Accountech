@@ -12,11 +12,17 @@
     components: {
       BForm
     },
+    props: {
+      employee_id: {
+        required: true,
+      },
+    },
     methods: {
       async handleBuySubmit(formData) {
         formData.type = 'purchase';
-        formData.id = 'id';
+        formData.id = this.employee_id;
         const { data } = await updateinventory(formData);
+        console.log('Buy form submitted:', data);
         // Aquí puedes realizar las acciones necesarias para el registro
         // utilizando los datos del formulario (formData)
         console.log('Buy form submitted:', formData);

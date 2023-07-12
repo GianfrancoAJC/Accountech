@@ -2,7 +2,7 @@
     <div class="home">
       <h1>Welcome Client! </h1>
       <p>Make a Purchase in our shop!.</p>
-      <p> {{ id  }} </p>
+      <p> {{ $route.params.DataTransfer }} </p>
     </div>
     <div>
       <CSale :client_id = "id"/>
@@ -15,10 +15,6 @@
     name: 'CClient',
     components: {
       CSale,
-    },
-    mounted() {
-      const id = this.$route.params.id;
-      this.id = id;
     },
     data() {
       return {
