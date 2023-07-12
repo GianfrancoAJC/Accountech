@@ -46,4 +46,6 @@ Lenguajes/otros: Python, JavaScript, Html, CSS
 # APIS
 ![image](https://github.com/GianfrancoAJC/Accountech/assets/131410220/7eda7615-71aa-459a-a810-a2477526d6d1)
 
+# ESTRUCTURA DEL FRONT
+![image](https://github.com/GianfrancoAJC/Accountech/assets/131410220/184be248-8331-4158-9062-80f6dae0a9e8)
 
