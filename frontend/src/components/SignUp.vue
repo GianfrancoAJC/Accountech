@@ -20,11 +20,11 @@ export default {
       // Aquí puedes realizar las acciones necesarias para el registro
       // utilizando los datos del formulario (formData)
       if (formData.role == 'employee') {
-        const { employee_id } = await createemployee(formData);
-        console.log('employee: ', employee_id);
+        const { data } = await createemployee(formData);
+        console.log('employee: ', data);
       } else {
-        const { client_id } = await createclient(formData);
-        console.log('client: ', client_id);
+        const { data } = await createclient(formData);
+        console.log('client: ', data);
       }
       console.log('Sign Up form submitted:', formData);
       //console.log('Sign Up form submitted:', formData.name, formData.password, formData.email, formData.role, formData.terms);

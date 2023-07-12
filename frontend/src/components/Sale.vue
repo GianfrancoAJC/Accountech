@@ -21,7 +21,6 @@
         // Aquí puedes realizar las acciones necesarias para el registro
         // utilizando los datos del formulario (formData)
         console.log('Buy form submitted:', formData);
-        //console.log('Buy form submitted:', formData.name, formData.password, formData.email, formData.role, formData.terms);
     }
     },
   };

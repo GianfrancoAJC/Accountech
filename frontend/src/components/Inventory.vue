@@ -43,8 +43,8 @@ export default {
     },
     methods: {
         async fetchInventories() {
-            const { inventories } = await getinventory();
-            this.inventories = inventories;
+            const { data } = await getinventory();
+            this.inventories = data;
         }
     }
 }

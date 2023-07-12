@@ -26,12 +26,12 @@ export default {
       // Aquí puedes realizar las acciones necesarias para el inicio de sesión
       // utilizando los datos del formulario (formData)
       if (formData.role == 'employee') {
-        const { employee_id } = await getemployee(formData);
-        console.log('employee: ', employee_id);
+        const { data } = await getemployee(formData);
+        console.log('employee: ', data);
         
       } else {
-        const { client_id } = await getclient(formData);
-        console.log('client: ', client_id);
+        const { data } = await getclient(formData);
+        console.log('client: ', data);
       }
       console.log('Log In form submitted:', formData);
       //console.log('Log In form submitted:', formData.name, formData.password, formData.email, formData.role, formData.terms);

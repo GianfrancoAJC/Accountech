@@ -3,6 +3,8 @@
     <br>
     <button @click="InitInventories">Init Inventory</button>
     <button @click="fetchInventories">Update Inventory</button>
+    <button @click="ShowEerr">Update EERR</button>
+    <button @click="ShowMcp">Update MCP</button>
     <div v-if="inventories.length">
         <h1>Inventory</h1>
         <table class="inventory-table">
@@ -65,23 +67,22 @@
         </table>
     </div>
     <div>
-        <form @submit.prevent.stop="DeleteInventories">
-            <label>Elija el producto a descontinuar</label>
-            <select v-model="dataform.id">
-                <option v-for="inventory in inventories" :key="inventory.id" :value="inventory.id">{{ inventory.name }}</option>
-            </select>
-            <label>Ingrese la contraseña de administrador</label>
-            <input type="password" required v-model="dataform.password">
-            <button>Submit</button>
-        </form>
+        <h1>EERR</h1>
+        <tr v-for="deerr in eerr">
+            <td>{{ deerr }}</td>
+        </tr>
     </div>
+    <div>
+        <h1>MCP</h1>
+        <p>MCP at the moment: {{ mcp }}</p>
+    </div>
+
 </template>
 
 <script>
 
 import { getinventory } from '@/services/inventory.api';
 import { initinventory } from '@/services/inventory.api';
-import { deleteinventory } from '@/services/inventory.api';
 import { showpurchases } from '@/services/tools.api';
 import { showsales } from '@/services/tools.api';
 import { showeerr } from '@/services/tools.api';
@@ -97,40 +98,52 @@ export default {
             inventories: [],
             purchases: [],
             sales: [],
+            eerr: [],
+            mcp: "",
         }
     },
     mounted() {
         this.fetchInventories();
         this.ShowPurchases();
         this.ShowSales();
+        this.ShowEerr();
+        this.ShowMcp();
     },
     methods: {
         async fetchInventories() {
-            const { products } = await getinventory();
-            console.log('products: ', products, typeof(products));
-            this.inventories = products;
+            const { data } = await getinventory();
+            console.log('products: ', data, typeof(data));
+            this.inventories =data;
             console.log('inventories: ', this.inventories, typeof(this.inventories));
         },
         async ShowPurchases() {
-            const { purchases } = await showpurchases();
-            console.log('purchases: ', purchases, typeof(message));
-            this.purchases = purchases;
+            const { data } = await showpurchases();
+            console.log('purchases: ', data, typeof(data));
+            this.purchases = data;
             console.log('purchases: ', this.purchases, typeof(this.purchases));
         },
         async ShowSales() {
-            const { sales } = await showsales();
-            console.log('sales: ', sales, typeof(message));
-            this.sales = sales;
+            const { data } = await showsales();
+            console.log('sales: ', data, typeof(data));
+            this.sales = data;
             console.log('sales: ', this.sales, typeof(this.sales));
         },
         async InitInventories() {
-            const { message } = await initinventory();
-            console.log('message: ', message, typeof(message));
+            const { data } = await initinventory();
+            console.log('message: ', data, typeof(data));
         },
-        async DeleteInventories() {
-            const { message } = await deleteinventory(this.dataform);
-            console.log('message: ', message, typeof(message));
-        }
+        async ShowEerr() {
+            const { data } = await showeerr();
+            console.log('message: ', data, typeof(data));
+            this.eerr = data;
+            console.log('eerr: ', this.eerr, typeof(this.eerr));
+        },
+        async ShowMcp() {
+            const { data } = await showmcp();
+            console.log('message: ', data, typeof(data));
+            this.mcp = data;
+            console.log('mcp: ', this.mcp, typeof(this.mcp));
+        },
     }
 }
 </script>
