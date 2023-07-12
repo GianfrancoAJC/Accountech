@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav v-if="$route.name !== 'Tools'">
     <router-link :to="{ name: 'Signup' }">Signup</router-link> |
     <router-link :to="{ name: 'Login' }">Login</router-link>
   </nav>

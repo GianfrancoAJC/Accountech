@@ -1,6 +1,5 @@
 <template>
     <div class="home">
-      <h1>Here only employees can purchase products for the company</h1>
       <BForm @buy-form-submit="handleBuySubmit" />
     </div>
   </template>

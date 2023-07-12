@@ -1,10 +1,10 @@
 <template>
+    <br><br>
     <h1>Tools Page</h1>
-    <br>
-    <button @click="InitInventories">Init Inventory</button>
-    <button @click="fetchInventories">Update Inventory</button>
-    <button @click="ShowEerr">Update EERR</button>
-    <button @click="ShowMcp">Update MCP</button>
+    <button class="button" @click="InitInventories">Init Inventory</button>
+    <button class="button" @click="fetchInventories">Update Inventory</button>
+    <button class="button" @click="ShowEerr">Update EERR</button>
+    <button class="button" @click="ShowMcp">Update MCP</button>
     <div v-if="inventories.length">
         <h1>Inventory</h1>
         <table class="inventory-table">
@@ -23,12 +23,7 @@
                 <td>{{ inventory.PVu }}</td>
             </tr>
         </table>
-    </div>
-    <div v-else>
-        <h1>Loading jobs...</h1>
-    </div>
-    <br>
-    <div>
+        <div>
         <h1>Purchases</h1>
         <table class="inventory-table">
             <tr>
@@ -77,6 +72,11 @@
         <p>MCP at the moment: {{ mcp }}</p>
     </div>
 
+    </div>
+    <div v-else>
+        <h1>Loading jobs...</h1>
+    </div>
+    <br>
 </template>
 
 <script>
@@ -150,31 +150,51 @@ export default {
 
 <style>
 .inventory-table {
-    font-family: Arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+  font-family: Arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
 }
 
 .inventory-table th,
 .inventory-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
 .inventory-table th {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .inventory-table td:first-child {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .inventory-table td:nth-child(n+4) {
-    text-align: right;
+  text-align: right;
 }
 
 .inventory-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+  background-color: #f9f9f9;
 }
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin-right: 15px; 
+  border: 1px solid #337ab7;
+  background-color: #337ab7;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #23527c;
+}
+
 </style>
