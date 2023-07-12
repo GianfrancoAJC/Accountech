@@ -1,7 +1,7 @@
 <template>
     <h1>Inventory Page</h1>
     <br>
-    <button>Ocultar inventorario</button>
+    <button @click="fetchInventories">Inventorario</button>
     <h1>{{inventories.length}}</h1>
     <div v-if="inventories.length">
         <table class="inventory-table">
@@ -38,13 +38,15 @@ import { getinventory } from '@/services/inventory.api';
 export default {
     data() {
         return {
-            inventories: []
+            inventories: [],
         }
     },
     methods: {
         async fetchInventories() {
-            const { inventories } = await getinventory();
-            this.inventories = inventories;
+            const { products } = await getinventory();
+            console.log('products: ', products);
+            this.inventories = products;
+            console.log('inventories: ', this.inventories);
         }
     }
 }
