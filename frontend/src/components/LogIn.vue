@@ -32,6 +32,7 @@ export default {
         if (success) {
           this.employee_id = data;
           this.$router.push({ name: 'Employee' });
+          this.$emit('id', this.employee_id);
         } else {
           alert('Wrong credentials');
         }
@@ -42,6 +43,7 @@ export default {
         if (success) {
           this.client_id = data;
           this.$router.push({ name: 'Client'});
+          this.$emit('id', this.client_id);
         } else {
           alert('Wrong credentials');
         }

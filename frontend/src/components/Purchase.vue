@@ -12,10 +12,10 @@
     components: {
       BForm
     },
-    props: {
-      employee_id: {
-        required: true,
-      },
+    data() {
+      return {
+        employee_id: '',
+      };
     },
     methods: {
       async handleBuySubmit(formData) {

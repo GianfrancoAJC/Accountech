@@ -2,10 +2,9 @@
     <div class="home">
       <h1>Welcome Client! </h1>
       <p>Make a Purchase in our shop!.</p>
-      <p> {{ $route.params.DataTransfer }} </p>
     </div>
     <div>
-      <CSale :client_id = "id"/>
+      <CSale />
     </div>
   </template>
   
@@ -15,11 +14,6 @@
     name: 'CClient',
     components: {
       CSale,
-    },
-    data() {
-      return {
-        id: '',
-      };
     },
   };
   </script>

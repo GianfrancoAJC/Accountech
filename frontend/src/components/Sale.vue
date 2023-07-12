@@ -7,16 +7,18 @@
   
   <script>
   import BForm from './buyForm.vue';
+  import LogIn from './LogIn.vue';
   import { updateinventory } from '@/services/inventory.api';
   export default {
     name: 'CSale',
     components: {
-      BForm
+      BForm,
+      LogIn,
     },
-    props: {
-      client_id: {
-        required: true,
-      },
+    data() {
+      return {
+        client_id: '',
+      };
     },
     methods: {
       async handleBuySubmit(formData) {
@@ -27,7 +29,10 @@
         // Aquí puedes realizar las acciones necesarias para el registro
         // utilizando los datos del formulario (formData)
         console.log('Buy form submitted:', formData);
-    }
+      },
+      async useid(id){
+        this.client_id = id;
+      },
     },
   };
   </script>

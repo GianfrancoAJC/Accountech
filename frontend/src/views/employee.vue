@@ -4,7 +4,7 @@
       <p>Welcome to our website! We offer a wide range of products and services to meet your needs. Whether you're looking for stylish clothing, high-quality electronics, or reliable home appliances, we've got you covered.</p>
     </div>
     <div>
-      <CPurchase :employee_id = "id" />
+      <CPurchase />
     </div>
     <div>
       <Tools />
@@ -15,15 +15,10 @@
   import CPurchase from '@/components/Purchase.vue';
   import Tools from '@/components/Tools.vue';
   export default {
-    name: 'CPurchase',
+    name: 'CClient',
     components: {
       CPurchase,
       Tools,
-    },
-    data() {
-      return {
-        id: '',
-      };
     },
   };
   </script>

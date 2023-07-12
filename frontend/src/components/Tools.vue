@@ -3,6 +3,8 @@
     <h1>Tools Page</h1>
     <button class="button" @click="InitInventories">Init Inventory</button>
     <button class="button" @click="fetchInventories">Update Inventory</button>
+    <button class="button" @click="ShowPurchases">Update Purchases</button>
+    <button class="button" @click="ShowSales">Update Sales</button>
     <button class="button" @click="ShowEerr">Update EERR</button>
     <button class="button" @click="ShowMcp">Update MCP</button>
     <div v-if="inventories.length">
