@@ -38,3 +38,6 @@ Lenguajes/otros: Python, JavaScript, Html, CSS
 2. npm install
 3. npm run serve
 
+
+![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/6b8d1a73-1a66-4d57-899e-8c366a0fd2b7)
+
