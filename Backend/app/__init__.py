@@ -63,7 +63,7 @@ def create_app(test_config=None):
                 'employee_id': employee_id
             }), returned_code
 
-    @app.route("/employee", methods=['POST'])
+    @app.route("/employee", methods=['GET'])
     def log_employees():
         returned_code = 200
         list_errors = []

@@ -44,9 +44,11 @@ export default {
     methods: {
         async fetchInventories() {
             const { products } = await getinventory();
-            console.log('products: ', products);
-            this.inventories = [...products];
-            console.log('inventories: ', this.inventories);
+            console.log('products: ', products, typeof(products));
+            for (let i = 0; i < products.length; i++) {
+                this.inventories.push(products[i]);
+            }
+            console.log('inventories: ', this.inventories, typeof(this.inventories));
         }
     }
 }
