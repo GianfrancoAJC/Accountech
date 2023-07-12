@@ -41,3 +41,9 @@ Lenguajes/otros: Python, JavaScript, Html, CSS
 
 ![image](https://github.com/GianfrancoAJC/Accountech/assets/130614636/6b8d1a73-1a66-4d57-899e-8c366a0fd2b7)
 
+# TESTING
+![image](https://github.com/GianfrancoAJC/Accountech/assets/131410220/7a5069c9-8952-4f06-87e3-80b6b7764fd5)
+# APIS
+![image](https://github.com/GianfrancoAJC/Accountech/assets/131410220/7eda7615-71aa-459a-a810-a2477526d6d1)
+
+
