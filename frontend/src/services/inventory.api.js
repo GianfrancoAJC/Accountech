@@ -21,7 +21,7 @@ export const getinventory = async () => {
   }
 
 export const deleteinventory = async (payload) => {
-    const { data } = await axios.delete(BASE_URL, payload);
+    const { data } = await axios.post(BASE_URL + "d", payload);
   
     return data;
   }

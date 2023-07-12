@@ -63,7 +63,7 @@ def create_app(test_config=None):
                 'employee_id': employee_id
             }), returned_code
 
-    @app.route("/employee", methods=['GET'])
+    @app.route("/employee", methods=['POST'])
     def log_employees():
         returned_code = 200
         list_errors = []
@@ -93,6 +93,18 @@ def create_app(test_config=None):
                 'success': True,
                 'employee_id': employee_id
             }), returned_code
+        
+    @app.route("/employees", methods=['GET'])
+    def showemployees():
+        try:
+            employees = Employee.query.all()
+            employees_serialized = [employee.serialize() for employee in employees]
+            if len(employees_serialized) == 0:
+                return jsonify({'success': False, 'message': 'No employees found'}), 404
+            return jsonify({'success': True, 'employees': employees_serialized}), 200
+        except Exception as e:
+            returned_code = 500
+            abort(returned_code)
         
     @app.route("/clients", methods=['POST'])
     def register_client():
@@ -174,6 +186,18 @@ def create_app(test_config=None):
                 'success': True,
                 'client_id': client_id
             }), returned_code
+        
+    @app.route("/clients", methods=['GET'])
+    def showclients():
+        try:
+            clients = Client.query.all()
+            clients_serialized = [client.serialize() for client in clients]
+            if len(clients_serialized) == 0:
+                return jsonify({'success': False, 'message': 'No clients found'}), 404
+            return jsonify({'success': True, 'clients': clients_serialized}), 200
+        except Exception as e:
+            returned_code = 500
+            abort(returned_code)
 
     @app.route("/inventory", methods=["POST"])
     def init_inventory():
@@ -248,15 +272,15 @@ def create_app(test_config=None):
             returned_code = 500
             abort(returned_code)
     
-    @app.route("/inventory>", methods=['DELETE'])
+    @app.route("/inventoryd", methods=['POST'])
     def deleteproduct():
         try:
             body = request.json
-            if body["password"] != "Marvin es el mejor profesor de la UTEC":
+            if body["password"] != "MarvinGod":
                 return jsonify({'success': False, 'message': 'Wrong password'}), 400
             if not body["product_id"]:
                 return jsonify({'success': False, 'message': 'Product id is required'}), 400
-            product_id = body["product_id"]
+            product_id = int(body["product_id"])
             product = Product.query.get(product_id)
             if not product:
                 return jsonify({'success': False, 'message': 'Product not found'}), 404
