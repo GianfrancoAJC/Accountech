@@ -1,5 +1,4 @@
 <template>
-    <h1>Here the clients can buy products to the company</h1>
     <form @submit.prevent.stop="handleSubmit">
       <label>Quantity:</label>
       <input type="quantity" required v-model="formData.quantity">

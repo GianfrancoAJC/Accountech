@@ -55,12 +55,12 @@ def create_app(test_config=None):
         if len(list_errors) > 0:
             return jsonify({
                 'success': False,
-                'errors': list_errors
+                'data': list_errors
             }), 400
         else:
             return jsonify({
                 'success': True,
-                'employee_id': employee_id
+                'data': employee_id
             }), returned_code
 
     @app.route("/employee", methods=['POST'])
@@ -86,12 +86,12 @@ def create_app(test_config=None):
         if len(list_errors) > 0:
             return jsonify({
                 'success': False,
-                'errors': list_errors
+                'data': list_errors
             }), 400
         else:
             return jsonify({
                 'success': True,
-                'employee_id': employee_id
+                'data': employee_id
             }), returned_code
         
     @app.route("/employees", methods=['GET'])
@@ -100,8 +100,8 @@ def create_app(test_config=None):
             employees = Employee.query.all()
             employees_serialized = [employee.serialize() for employee in employees]
             if len(employees_serialized) == 0:
-                return jsonify({'success': False, 'message': 'No employees found'}), 404
-            return jsonify({'success': True, 'employees': employees_serialized}), 200
+                return jsonify({'success': False, 'data': 'No employees found'}), 404
+            return jsonify({'success': True, 'data': employees_serialized}), 200
         except Exception as e:
             returned_code = 500
             abort(returned_code)
@@ -147,12 +147,12 @@ def create_app(test_config=None):
         if len(list_errors) > 0:
             return jsonify({
                 'success': False,
-                'errors': list_errors
+                'data': list_errors
             }), 400
         else:
             return jsonify({
                 'success': True,
-                'client_id': client_id
+                'data': client_id
             }), returned_code
         
     @app.route("/client", methods=['POST'])
@@ -179,12 +179,12 @@ def create_app(test_config=None):
         if len(list_errors) > 0:
             return jsonify({
                 'success': False,
-                'errors': list_errors
+                'data': list_errors
             }), 400
         else:
             return jsonify({
                 'success': True,
-                'client_id': client_id
+                'data': client_id
             }), returned_code
         
     @app.route("/clients", methods=['GET'])
@@ -193,8 +193,8 @@ def create_app(test_config=None):
             clients = Client.query.all()
             clients_serialized = [client.serialize() for client in clients]
             if len(clients_serialized) == 0:
-                return jsonify({'success': False, 'message': 'No clients found'}), 404
-            return jsonify({'success': True, 'clients': clients_serialized}), 200
+                return jsonify({'success': False, 'data': 'No clients found'}), 404
+            return jsonify({'success': True, 'data': clients_serialized}), 200
         except Exception as e:
             returned_code = 500
             abort(returned_code)
@@ -204,7 +204,7 @@ def create_app(test_config=None):
         try:
             products = Product.query.all()
             if len(products) != 0:
-                return jsonify({'success':True, 'message': 'Inventory already initialized'}), 200
+                return jsonify({'success':True, 'data': 'Inventory already initialized'}), 200
             product1 = Product(1,"Cristal", 0, 0.5, 2.54)
             product2 = Product(2,"Pilsen Callao", 0, 0.5, 2.75)
             product3 = Product(3,"Cusqueña", 0, 0.8, 3.53)
@@ -213,7 +213,7 @@ def create_app(test_config=None):
             product6 = Product(6,"Arequipeña", 0, 0.5, 2.62)
             db.session.add_all([product1, product2, product3, product4, product5, product6])
             db.session.commit()
-            return jsonify({'success':True, 'message': 'Inventory initialized successfully'}), 200
+            return jsonify({'success':True, 'data': 'Inventory initialized successfully'}), 200
         except:
             db.session.rollback()
             returned_code = 500
@@ -258,7 +258,7 @@ def create_app(test_config=None):
             abort(returned_code)
         finally:
             db.session.close()
-        return jsonify({'success':True, 'message': f"Product {product_id} updated"}), returned_code
+        return jsonify({'success':True, 'data': f"Product {product_id} updated"}), returned_code
 
     @app.route("/inventory", methods=['GET'])
     def showinventory():
@@ -266,27 +266,8 @@ def create_app(test_config=None):
             products = Product.query.all()
             products_serialized = [product.serialize() for product in products]
             if len(products_serialized) == 0:
-                return jsonify({'success': False, 'message': 'Inventory is empty'}), 404
-            return jsonify({'success': True, 'products': products_serialized}), 200
-        except Exception as e:
-            returned_code = 500
-            abort(returned_code)
-    
-    @app.route("/inventoryd", methods=['POST'])
-    def deleteproduct():
-        try:
-            body = request.json
-            if body["password"] != "MarvinGod":
-                return jsonify({'success': False, 'message': 'Wrong password'}), 400
-            if not body["product_id"]:
-                return jsonify({'success': False, 'message': 'Product id is required'}), 400
-            product_id = int(body["product_id"])
-            product = Product.query.get(product_id)
-            if not product:
-                return jsonify({'success': False, 'message': 'Product not found'}), 404
-            db.session.delete(product)
-            db.session.commit()
-            return jsonify({'success': True, 'message': f"Product {product_id} deleted"}), 200
+                return jsonify({'success': False, 'data': 'Inventory is empty'}), 404
+            return jsonify({'success': True, 'data': products_serialized}), 200
         except Exception as e:
             returned_code = 500
             abort(returned_code)
@@ -297,8 +278,8 @@ def create_app(test_config=None):
             purchases = Purchase.query.all()
             purchases_serialized = [purchase.serialize() for purchase in purchases]
             if len(purchases_serialized) == 0:
-                return jsonify({'success': False, 'message': 'No purchases found'}), 404
-            return jsonify({'success': True, 'purchases': purchases_serialized}), 200
+                return jsonify({'success': False, 'data': 'No purchases found'}), 404
+            return jsonify({'success': True, 'data': purchases_serialized}), 200
         except Exception as e:
             returned_code = 500
             abort(returned_code)
@@ -309,8 +290,8 @@ def create_app(test_config=None):
             sales = Sale.query.all()
             sales_serialized = [sale.serialize() for sale in sales]
             if len(sales_serialized) == 0:
-                return jsonify({'success': False, 'message': 'No sales found'}), 404
-            return jsonify({'success': True, 'sales': sales_serialized}), 200
+                return jsonify({'success': False, 'data': 'No sales found'}), 404
+            return jsonify({'success': True, 'data': sales_serialized}), 200
         except Exception as e:
             returned_code = 500
             abort(returned_code)
@@ -341,23 +322,23 @@ def create_app(test_config=None):
                 costo_venta += producto['CVu'] * producto['stock']
             
             utilidad_bruta = ventas - costo_venta
-            return jsonify({"1": "Dev. de Ventas\n0",
-                            "2": "Ventas\n" + str(ventas),
-                            "3": "Ventas brutas\n" + str(ventas),
-                            "4": "Costo de ventas\n" + str(costo_venta),
-                            "5": "Utilidad bruta\n" + str(utilidad_bruta),
-                            "6": "Gastos operativos\n0",
-                            "7": "Gasto de ventas\n0",
-                            "8": "Otros gastos\n0",
-                            "9": "Otros ingresos\n0",
-                            "10": "Utilidad operativa\n" + str(utilidad_bruta),
-                            "11": "Gastos financieros\n0",
-                            "12": "Ingresos financieros\n0",
-                            "13": "Utilidad antes de participaciones e impuestos\n" + str(utilidad_bruta),
-                            "14": "Participaciones\n0",
-                            "15": "Impuestos\n0",
-                            "16": "Utilidad neta\n" + str(utilidad_bruta),
-                            "success": True}), 200
+            list_eerr = ["Ventas:\n" + str(ventas),
+                        "Dev. de Ventas:\n0",
+                        "Ventas brutas:\n" + str(ventas),
+                        "Costo de ventas:\n" + str(costo_venta),
+                        "Utilidad bruta:\n" + str(utilidad_bruta),
+                        "Gastos operativos:\n0",
+                        "Gasto de ventas:\n0",
+                        "Otros gastos:\n0",
+                        "Otros ingresos:\n0",
+                        "Utilidad operativa:\n" + str(utilidad_bruta),
+                        "Gastos financieros:\n0",
+                        "Ingresos financieros:\n0",
+                        "Utilidad antes de participaciones e impuestos:\n" + str(utilidad_bruta),
+                        "Participaciones:\n0",
+                        "Impuestos:\n" + str(utilidad_bruta*0.295),
+                        "Utilidad neta:\n" + str(utilidad_bruta*(1-0.295))]
+            return jsonify({"data": list_eerr, "success": True}), 200
         except:
             returned_code = 500
             abort(returned_code)
@@ -385,7 +366,7 @@ def create_app(test_config=None):
             margen = 0
             for producto in lista_productos:
                 margen += (producto['PVu'] - producto['CVu']) * producto['stock'] / stock_total
-            return jsonify({"mcp": margen, "success": True}), 200
+            return jsonify({"data": margen, "success": True}), 200
             
         except:
             returned_code = 500

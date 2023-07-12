@@ -1,15 +1,30 @@
 <template>
     <div class="home">
       <h1>Welcome Client! </h1>
-      <p>Welcome to our website! We offer a wide range of products and services to meet your needs. Whether you're looking for stylish clothing, high-quality electronics, or reliable home appliances, we've got you covered.</p>
-      <p>Explore our website to discover amazing deals, exclusive offers, and a seamless shopping experience. Don't forget to sign up for our newsletter to stay updated with the latest promotions and news.</p>
+      <p>Make a Purchase in our shop!.</p>
+      <p> {{ id  }} </p>
+    </div>
+    <div>
+      <CSale :client_id = "id"/>
     </div>
   </template>
   
   <script>
+  import CSale from '@/components/Sale.vue';
   export default {
     name: 'CClient',
-    components: {},
+    components: {
+      CSale,
+    },
+    mounted() {
+      const id = this.$route.params.id;
+      this.id = id;
+    },
+    data() {
+      return {
+        id: '',
+      };
+    },
   };
   </script>
   

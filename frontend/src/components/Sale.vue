@@ -1,6 +1,7 @@
 <template>
     <div class="home">
       <h1>Here the clients can buy products to the company</h1>
+      <p> {{ client_id }} </p>
       <BForm @buy-form-submit="handleBuySubmit" />
     </div>
   </template>
@@ -12,6 +13,11 @@
     name: 'CSale',
     components: {
       BForm
+    },
+    props: {
+      client_id: {
+        required: true,
+      },
     },
     methods: {
       async handleBuySubmit(formData) {
